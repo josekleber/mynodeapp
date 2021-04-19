@@ -2,9 +2,10 @@ const User = require('../../model/user');
 const MongoRepository = require('../../repositories/implementation/mongo-repository');
 const { validate } = require('secure-password-validator');
 const bcrypt = require('bcrypt');
+const { UserAlreadyExistError, WeakPasswordError } = require('../../utils/custom-error');
 
 
-module.exports = class RegisterUseCase {
+class RegisterUseCase {
 
     constructor() {
 
@@ -27,11 +28,11 @@ module.exports = class RegisterUseCase {
 
         // verificar se o usuário existe na base.
         let foundUser = await db.find({ UserName: User.UserName });
-        if (foundUser) throw new Error('usuário já existe');
+        if (foundUser) throw new UserAlreadyExistError(User.UserName);
 
         // verificar se a senha está num padrão aceitável 
         const isPwdValid = await validate (User.Password, this.pwdOptions);
-        if (!isPwdValid.valid) throw new Error('senha não é segura');
+        if (!isPwdValid.valid) throw new WeakPasswordError('Senha não atende ao padrão mínimo de segurança.');
         
         // criptografar senha.
         let hashPwd = await bcrypt.hash(User.Password, this.saltRounds);
@@ -46,3 +47,5 @@ module.exports = class RegisterUseCase {
     }
 
 }
+
+module.exports = RegisterUseCase;

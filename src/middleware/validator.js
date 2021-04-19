@@ -11,7 +11,6 @@ const userValidate = [
     body('Email','Body must have Email property').exists(),
     body('Email','Property Email must be an Email').isEmail(),
     (req, res, next) => {
-        console.log(req.body);
         const erros  = validationResult(req);
         if (!erros.isEmpty())
             return res.status(422).json({error: erros.array()});
