@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
     "helmet": "^4.4.1",
+    "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.5",
     "morgan": "^1.10.0",
     "secure-password-validator": "^1.0.2"

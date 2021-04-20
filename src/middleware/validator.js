@@ -18,4 +18,15 @@ const userValidate = [
     }
 ]
 
-module.exports = { userValidate };
+const loginValidate = [
+    body('UserName','Body must have UserName property').exists(),
+    body('Password','Body must have Password property').exists(),
+    (req, res, next) => {
+        const erros  = validationResult(req);
+        if (!erros.isEmpty())
+            return res.status(422).json({error: erros.array()});
+        next();
+    }
+]
+
+module.exports = { userValidate, loginValidate };
